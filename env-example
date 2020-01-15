@@ -1,0 +1,5 @@
+DEBUG=False
+SCAN_RESULTS_PATH=/your/path/to/load/json
+WHITELISTS_EXPORT_PATH=/your/path/to/export/whitelists
+SECRET_KEY=random-secret-key
+CONTAINER_EXT_PORT=5005

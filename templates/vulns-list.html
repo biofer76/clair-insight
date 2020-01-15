@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+    <title>Clair Scanner - Vulnerabilities List</title>
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="/js/main.js"></script>
+        <link rel="stylesheet" type="text/css" href="/css/main.css">
+    </head>
+    <body>
+        <header>
+            <h1>Clair Scanner - Vulnerabilities List</h1>
+        </header>
+        <h2>Vulnerabilities found: {{ rows_len }}</h2>
+        <p>Select Clair Scanner result file:
+            <select id="fileSelector" name="jsonfile">
+                <option value="none">---</option>
+                {% for file in result_files %}
+                    <option value="{{ file }}">{{ file }}</option>
+                {% endfor %}
+            </select>
+        </p>
+        {% if rows_len %}
+        <p>Selected JSON file: <strong>{{  jsonfile  }}</strong></p>
+        <p>Docker image: <strong>{{  dockerimage  }}</strong></p>
+        <form name="f1" action="/whitelist" method="post">
+            <table class="table-fill">
+                <thead>
+                <tr>
+                    <th><input type="checkbox" id="checkAll" /></th>
+                    <th>Severity</th>
+                    <th>Status</th>
+                    <th>Vulnerability</th>
+                    <th nowrap>Feature Name</th>
+                    <th nowrap>Feature Version</th>
+                    <th>Namespace</th>
+                    <th>Description</th>
+                </tr>
+                </thead>
+                <tbody class="table-hover">
+                {% for row in rows %}
+                <tr>
+                    <td nowrap><input type="checkbox" name="{{ row['vulnerability'] }}@{{ row['featurename'] }}" value="1"></td>
+                    <td nowrap><a href="/?severity={{ row['severity'] }}"><span class="{{ row['severity']|lower }}">{{ row['severity'] }}</span></a></td>
+                    <td nowrap><span class="{{ row['status']|lower }}">{{ row['status'][0]|upper}}{{row['status'][1:] }} </span></td>
+                    <td nowrap><a href="{{ row['link'] }}" target="_blank">{{ row['vulnerability'] }}</a></td>
+                    <td nowrap><a href="/?feature={{ row['featurename'] }}">{{ row['featurename'] }}</a></td>
+                    <td nowrap>{{ row['featureversion'] }}</td>
+                    <td nowrap>{{ row['namespace'] }}</td>
+                    <td>{{ row['description'] }}</td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <div style="margin: 10px">
+                <input type="submit" value="Generate Whitelist" name="whitelist" class="button">
+                <a href="/" class="button">Remove filters</a>
+            </div>
+        </form>
+        {% endif %}
+{% include 'footer.html' %}

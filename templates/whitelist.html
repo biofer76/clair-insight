@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<title>Clair Scanner - Whitelist</title>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="/js/main.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/main.css">
+</head>
+<body>
+<header>
+    <h1>Clair Scanner - Whitelist Generator</h1>
+</header>
+<h2>YAML Output file</h2>
+<form name="f1" method="post" action="/whitelist/save">
+    <textarea readonly name="yamloutput">{{ whitelist }}</textarea>
+    {% if write_result %}
+        <p>YAML File saved: <strong>{{ write_result }}</strong></p>
+        <a href="/">Go Back</a>
+    {% else %}
+        <p>YAML File name: <input type="text" name="yamlfile" required>.yml</p>
+        <input type="submit" name="yamlsave" value="Save">
+        <a href="javascript:history.back()">Go Back</a>
+    {% endif %}
+</form>
+{% include 'footer.html' %}
